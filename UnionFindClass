@@ -1,0 +1,122 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package UnionFindPkg;
+
+import java.util.Random;
+import java.util.Scanner;
+
+/**
+ *
+ * @author Vaishali Tripathi
+ */
+public class UnionFindClass implements UnionFindInterface {
+
+    private int idArray[];
+    private int p;
+    private int q;
+    private int count = 0;
+    private int pairCount = 0;
+
+    //private int N;
+    public UnionFindClass(int N) {
+        idArray = new int[N];
+        int i;
+        for (i = 0; i < N; i++) {
+            idArray[i] = i;
+            //System.out.print(idArray[i] + " ");
+        }
+    }
+
+    public int components() {
+        return count;
+    }
+
+    public static int count(int N) {
+        Random random = new Random();
+        UnionFindClass uf = new UnionFindClass(N);
+//        int pairCount = 0;
+        //int count = 0;
+
+        int a = 0;
+        for (a = 0; a < N; a++) {
+
+            while (!(uf.idArray[0] == (uf.idArray[a]))) {
+                uf.p = random.nextInt(N);
+                uf.q = random.nextInt(N);
+                if (uf.p == uf.q) {
+                    do {
+                        uf.q = random.nextInt(N - 1);
+                    } while (uf.p == uf.q);
+                }
+                uf.pairCount++;
+                //System.out.println("\nRandom pair: (" + p + "," + q + ")");
+                if (!uf.isConnected(uf.p, uf.q)) {
+                    uf.connect(uf.p, uf.q);
+
+                }
+            }
+        }
+        return uf.pairCount;
+    }
+
+    @Override
+    public int find(int p) {
+
+        p = idArray[p];
+
+        return p;
+    }
+
+    @Override
+    public void union(int p, int q) {
+        int x = find(p);
+        int y = find(q);
+        for (int i = 0; i < idArray.length; i++) {
+            if (idArray[i] == x) {
+                idArray[i] = y;
+            }
+        }
+        count++;
+
+        for (int c = 0; c < idArray.length; c++) {
+            //System.out.print(idArray[c] + " ");
+        }
+        //System.out.println("Connection Count till now: "+count);
+    }
+
+    @Override
+    public void connect(int p, int q) {
+        union(p, q);
+    }
+
+    //Check if the graph has been connected
+//    public void isCompleted(int N) {
+//        int a = 0;
+//        for (a = 0; a<N ;a++){ 
+//        
+//        while(!(idArray[0]==(idArray[a])))
+//                {
+//               count(N);
+//               
+//              // System.out.println("Value of a: "+a);
+//              
+//            }
+// 
+//        }       
+//    }
+    public static void main(String[] args) {
+        System.out.println("Enter the value of N (number of sites): ");
+        Scanner scanner = new Scanner(System.in);
+        int N;
+        N = scanner.nextInt();
+        scanner.nextLine();
+
+//        N=10;
+        //UnionFindClass uf = new UnionFindClass(N);
+        //uf.isCompleted(N);
+        System.out.println("\nPair Count: " + count(N));
+    }
+}
